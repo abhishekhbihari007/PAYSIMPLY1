@@ -1,0 +1,43 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D4D3E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#064030;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes appearLeft { 0% { stroke-dashoffset: 50; opacity: 0; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+    @keyframes appearRight { 0% { stroke-dashoffset: 50; opacity: 0; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+    @keyframes connectAnimation { 0% { stroke-dashoffset: 14; opacity: 0; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+    @keyframes continuousPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+    @keyframes textFade { 0% { opacity: 0; transform: translateY(5px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes ripple { 0% { r: 24; opacity: 0.6; } 100% { r: 32; opacity: 0; } }
+    .circle-left-anim { stroke-dasharray: 50; animation: appearLeft 0.6s ease-out forwards; }
+    .circle-right-anim { stroke-dasharray: 50; animation: appearRight 0.6s ease-out 0.4s forwards; stroke-dashoffset: 50; opacity: 0; }
+    .connect-anim { stroke-dasharray: 14; animation: connectAnimation 0.4s ease-out 1s forwards; stroke-dashoffset: 14; opacity: 0; }
+    .pulse-dot { animation: continuousPulse 2s ease-in-out 1.5s infinite; opacity: 0.3; }
+    .ripple-1 { animation: ripple 2s ease-out 1.5s infinite; opacity: 0; }
+    .ripple-2 { animation: ripple 2s ease-out 2s infinite; opacity: 0; }
+    .text-p { animation: textFade 0.4s ease-out 1.6s forwards; opacity: 0; }
+    .text-a { animation: textFade 0.4s ease-out 1.7s forwards; opacity: 0; }
+    .text-y { animation: textFade 0.4s ease-out 1.8s forwards; opacity: 0; }
+    .text-simply { animation: textFade 0.4s ease-out 1.9s forwards; opacity: 0; }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+  </style>
+  <g id="icon">
+    <circle class="ripple-1" cx="30" cy="30" r="24" fill="none" stroke="#D4FF00" stroke-width="1.5"/>
+    <circle class="ripple-2" cx="30" cy="30" r="24" fill="none" stroke="#D4FF00" stroke-width="1"/>
+    <circle cx="30" cy="30" r="24" fill="#C8F000" opacity="0.08"/>
+    <g transform="translate(18, 22)">
+      <circle class="circle-left-anim" cx="6" cy="8" r="6" fill="none" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/>
+      <circle class="circle-right-anim" cx="18" cy="8" r="6" fill="none" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/>
+      <line class="connect-anim" x1="6" y1="8" x2="18" y2="8" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/>
+      <circle class="pulse-dot" cx="12" cy="8" r="2" fill="#D4FF00"/>
+    </g>
+  </g>
+  <g transform="translate(65, 0)">
+    <text y="38" font-family="'DM Serif Display', serif" font-size="30" font-weight="400" fill="#FFFFFF">
+      <tspan class="text-p">Pay</tspan><tspan class="text-simply" fill="#C8F000" font-style="italic">Simply</tspan>
+    </text>
+  </g>
+</svg>
