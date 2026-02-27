@@ -22,7 +22,7 @@ const ComparisonSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted-foreground mt-4 max-w-lg mx-auto text-[15px]"
           >
@@ -33,41 +33,51 @@ const ComparisonSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.7 }}
           className="overflow-hidden rounded-[20px] border border-border/60"
         >
-          <div className="grid grid-cols-3 bg-primary text-primary-foreground">
-            <div className="p-3 md:p-5 font-heading font-normal tracking-[-0.02em] text-xs md:text-sm">Feature</div>
-            <div className="p-3 md:p-5 font-heading font-normal tracking-[-0.02em] text-xs md:text-sm text-center">PaySimply</div>
-            <div className="p-3 md:p-5 font-heading font-normal tracking-[-0.02em] text-xs md:text-sm text-center">Others</div>
-          </div>
-          {rows.map((row, i) => (
-            <motion.div
-              key={row.feature}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className={`grid grid-cols-3 ${i % 2 === 0 ? "bg-muted/30" : "bg-background"}`}
-            >
-              <div className="p-3 md:p-5 text-xs md:text-sm font-medium text-foreground">{row.feature}</div>
-              <div className="p-3 md:p-5 text-xs md:text-sm text-center flex items-center justify-center gap-1 md:gap-2">
-                <Check className="w-3 h-3 md:w-4 md:h-4 text-secondary flex-shrink-0" />
-                <span className="text-foreground font-medium">{row.paysimply}</span>
-              </div>
-              <div className="p-3 md:p-5 text-xs md:text-sm text-center flex items-center justify-center gap-1 md:gap-2">
-                <X className="w-3 h-3 md:w-4 md:h-4 text-destructive flex-shrink-0" />
-                <span className="text-muted-foreground">{row.others}</span>
-              </div>
-            </motion.div>
-          ))}
+          <table className="w-full" role="table">
+            <thead>
+              <tr className="bg-primary text-primary-foreground">
+                <th className="p-3 md:p-5 font-heading font-normal tracking-[-0.02em] text-xs md:text-sm text-left">Feature</th>
+                <th className="p-3 md:p-5 font-heading font-normal tracking-[-0.02em] text-xs md:text-sm text-center">PaySimply</th>
+                <th className="p-3 md:p-5 font-heading font-normal tracking-[-0.02em] text-xs md:text-sm text-center">Others</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <motion.tr
+                  key={row.feature}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className={i % 2 === 0 ? "bg-muted/30" : "bg-background"}
+                >
+                  <td className="p-3 md:p-5 text-xs md:text-sm font-medium text-foreground">{row.feature}</td>
+                  <td className="p-3 md:p-5 text-xs md:text-sm text-center">
+                    <span className="inline-flex items-center justify-center gap-1 md:gap-2">
+                      <Check className="w-3 h-3 md:w-4 md:h-4 text-secondary flex-shrink-0" />
+                      <span className="text-foreground font-medium">{row.paysimply}</span>
+                    </span>
+                  </td>
+                  <td className="p-3 md:p-5 text-xs md:text-sm text-center">
+                    <span className="inline-flex items-center justify-center gap-1 md:gap-2">
+                      <X className="w-3 h-3 md:w-4 md:h-4 text-destructive flex-shrink-0" />
+                      <span className="text-muted-foreground">{row.others}</span>
+                    </span>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-10"
         >

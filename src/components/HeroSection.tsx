@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, CheckCircle, Share2, X, Copy, Check } from "lucide-react";
 import { LetterReveal3D } from "@/lib/animations";
@@ -8,7 +8,7 @@ const PhoneMockup = () => (
   <motion.div
     initial={{ opacity: 0, y: 60, rotateY: -8 }}
     whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-    viewport={{ once: false }}
+    viewport={{ once: true }}
     transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] as const }}
     className="relative"
   >
@@ -53,7 +53,7 @@ const PhoneMockup = () => (
     <motion.div
       initial={{ opacity: 0, x: -40, y: 20 }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: false }}
+      viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.8 }}
       className="absolute -left-6 md:-left-16 top-1/3 bg-background rounded-xl px-4 py-2.5 shadow-lg border border-border/60 flex items-center gap-2"
     >
@@ -64,7 +64,7 @@ const PhoneMockup = () => (
     <motion.div
       initial={{ opacity: 0, x: 40, y: -20 }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: false }}
+      viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 1.0 }}
       className="absolute -right-4 md:-right-14 top-2/3 bg-background rounded-xl px-4 py-2.5 shadow-lg border border-border/60 flex items-center gap-2"
     >
@@ -80,14 +80,70 @@ const DemoModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
   const [upiId, setUpiId] = useState("");
   const [name, setName] = useState("");
   const [copied, setCopied] = useState(false);
+  const [validationError, setValidationError] = useState("");
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const generatedLink = `paysimply.in/${name.toLowerCase().replace(/\s+/g, "-") || "your-name"}`;
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(`https://${generatedLink}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(`https://${generatedLink}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }, [generatedLink]);
+
+  const handleGenerate = () => {
+    if (!name.trim() || !upiId.trim()) {
+      setValidationError("Please fill in both fields");
+      return;
+    }
+    if (!upiId.includes("@")) {
+      setValidationError("Please enter a valid UPI ID (e.g. name@upi)");
+      return;
+    }
+    setValidationError("");
+    setStep(1);
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "Tab" && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (open && modalRef.current) {
+      const firstInput = modalRef.current.querySelector<HTMLElement>("input, button");
+      firstInput?.focus();
+    }
+    if (!open) {
+      setStep(0);
+      setName("");
+      setUpiId("");
+      setValidationError("");
+    }
+  }, [open]);
 
   return (
     <AnimatePresence>
@@ -98,8 +154,12 @@ const DemoModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/60 backdrop-blur-sm"
           onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Create payment link"
         >
           <motion.div
+            ref={modalRef}
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 30 }}
@@ -107,7 +167,7 @@ const DemoModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
             className="bg-background rounded-[24px] w-full max-w-md shadow-2xl overflow-hidden relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-10">
+            <button onClick={onClose} aria-label="Close dialog" className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-10">
               <X className="w-5 h-5" />
             </button>
 
@@ -130,7 +190,8 @@ const DemoModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 block">Your UPI ID</label>
                     <input type="text" value={upiId} onChange={(e) => setUpiId(e.target.value)} placeholder="yourname@upi" className="w-full border border-border rounded-xl px-4 py-3 text-sm text-foreground bg-background focus:outline-none focus:ring-2 focus:ring-secondary/50" />
                   </div>
-                  <button onClick={() => setStep(1)} className="w-full bg-secondary text-secondary-foreground py-3.5 rounded-xl text-sm font-semibold hover:brightness-95 transition-all mt-2">Generate My Link →</button>
+                  {validationError && <p className="text-destructive text-xs">{validationError}</p>}
+                  <button onClick={handleGenerate} className="w-full bg-secondary text-secondary-foreground py-3.5 rounded-xl text-sm font-semibold hover:brightness-95 transition-all mt-2">Generate My Link →</button>
                 </motion.div>
               ) : (
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-5">
@@ -149,7 +210,7 @@ const DemoModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
                     </button>
                   </div>
                   <p className="text-center text-muted-foreground text-xs">This is a demo. Sign up to create a real payment link.</p>
-                  <button onClick={() => { setStep(0); setName(""); setUpiId(""); }} className="w-full border border-border text-foreground py-3 rounded-xl text-sm font-medium hover:bg-muted transition-colors">← Try Another</button>
+                  <button onClick={() => { setStep(0); setName(""); setUpiId(""); setValidationError(""); }} className="w-full border border-border text-foreground py-3 rounded-xl text-sm font-medium hover:bg-muted transition-colors">← Try Another</button>
                 </motion.div>
               )}
             </div>
@@ -178,9 +239,9 @@ const HeroSection = () => {
         <div className="mx-auto px-6 lg:px-16 max-w-[1400px] relative z-10 pt-16 md:pt-24 lg:pt-28 pb-16 md:pb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.5 }} className="mb-6">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="mb-6">
                 <span className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm text-primary-foreground/80 px-5 py-2 rounded-full text-xs font-semibold border border-primary-foreground/10">
-                  <img src="https://flagcdn.com/w40/in.png" alt="Indian flag" className="w-5 h-3.5 inline-block" /> Made in India · All you need is your UPI ID
+                  <svg className="w-5 h-3.5 inline-block" viewBox="0 0 900 600" aria-label="Indian flag"><rect width="900" height="200" fill="#FF9933"/><rect y="200" width="900" height="200" fill="#fff"/><rect y="400" width="900" height="200" fill="#138808"/><circle cx="450" cy="300" r="60" fill="#000080" fillOpacity="0.8"/><circle cx="450" cy="300" r="50" fill="#fff"/></svg> Made in India · All you need is your UPI ID
                 </span>
               </motion.div>
 
@@ -194,18 +255,18 @@ const HeroSection = () => {
                 </h1>
               </div>
 
-              <motion.p initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.5, delay: 0.3 }} className="text-secondary font-heading font-normal tracking-[-0.02em] text-lg md:text-xl mb-4">
+              <motion.p initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="text-secondary font-heading font-normal tracking-[-0.02em] text-lg md:text-xl mb-4">
                 Sharper. Safer. Smarter.
               </motion.p>
 
-              <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, delay: 0.4 }} className="text-primary-foreground/55 text-sm md:text-[15px] max-w-[520px] mx-auto lg:mx-0 mb-2 leading-relaxed">
+              <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.4 }} className="text-primary-foreground/55 text-sm md:text-[15px] max-w-[520px] mx-auto lg:mx-0 mb-2 leading-relaxed">
                 Create a clean, secure payment page using just your UPI ID.
               </motion.p>
-              <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, delay: 0.5 }} className="text-primary-foreground/40 text-xs md:text-sm max-w-[480px] mx-auto lg:mx-0 mb-8 leading-relaxed">
+              <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.5 }} className="text-primary-foreground/40 text-xs md:text-sm max-w-[480px] mx-auto lg:mx-0 mb-8 leading-relaxed">
                 Share one simple link. Let anyone pay you instantly. Perfect for Instagram creators, freelancers & small businesses in India.
               </motion.p>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6, delay: 0.6 }} className="flex flex-col items-center lg:items-start gap-3">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.6 }} className="flex flex-col items-center lg:items-start gap-3">
                 <div className="flex flex-col items-center gap-2">
                   <button
                     onClick={() => setDemoOpen(true)}

@@ -1,19 +1,21 @@
-// High-level auth route that mounts the
-// animated sign-up experience defined in AuthComponent.
-
 import { useState } from "react";
 import { AuthComponent } from "@/components/ui/sign-up";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function handleGoogleSignIn() {
     setError(null);
     setLoading(true);
     try {
-      // Hook your real auth provider here (Supabase, Auth0, Firebase, etc.)
-      setError("Sign-in is not configured.");
+      // TODO: Hook your real auth provider here (Supabase, Auth0, Firebase, etc.)
+      await new Promise((r) => setTimeout(r, 1500));
+      setError("Authentication coming soon! We're launching shortly.");
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -21,10 +23,6 @@ export default function AuthPage() {
 
   return (
     <AuthComponent
-      // Use the built-in default logo and brandName from AuthComponent
-      logo={undefined}
-      brandName={undefined}
-      hideTopBar
       onGoogleLogin={handleGoogleSignIn}
       onGoogleSignUp={handleGoogleSignIn}
       loading={loading}
@@ -32,4 +30,3 @@ export default function AuthPage() {
     />
   );
 }
-

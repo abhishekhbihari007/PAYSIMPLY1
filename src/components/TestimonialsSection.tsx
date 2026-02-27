@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Wallet, CreditCard, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Wallet, CreditCard, Users, Pause, Play } from "lucide-react";
 import { StaggerFade } from "@/lib/animations";
 
 import imgProfessionals from "@/assets/testimonial-professionals.png";
@@ -21,16 +21,6 @@ const testimonials = [
   { image: imgYoutuber, description: "Drop your payment link in video descriptions. Accept tips, course payments, and donations with zero setup required.", category: "Video Creators" },
 ];
 
-if (typeof window !== "undefined") {
-  testimonials.forEach((t) => {
-    const link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "image";
-    link.href = t.image;
-    document.head.appendChild(link);
-  });
-}
-
 const notCards = [
   { icon: Wallet, title: "Not a wallet", description: "We don't hold your money. Ever." },
   { icon: CreditCard, title: "Not a payment gateway", description: "No merchant account needed." },
@@ -39,19 +29,35 @@ const notCards = [
 
 const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const startAutoPlay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
-    return () => clearInterval(interval);
   }, []);
+
+  const stopAutoPlay = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isPlaying) startAutoPlay();
+    else stopAutoPlay();
+    return stopAutoPlay;
+  }, [isPlaying, startAutoPlay, stopAutoPlay]);
 
   const scroll = useCallback((dir: "left" | "right") => {
     setActiveIndex((prev) =>
       dir === "left" ? (prev - 1 + testimonials.length) % testimonials.length : (prev + 1) % testimonials.length
     );
-  }, []);
+    if (isPlaying) startAutoPlay();
+  }, [isPlaying, startAutoPlay]);
 
   const progress = ((activeIndex + 1) / testimonials.length) * 100;
   const current = testimonials[activeIndex];
@@ -70,7 +76,7 @@ const TestimonialsSection = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
           className="bg-primary-foreground/[0.06] rounded-[28px] p-5 md:p-8 mb-8"
         >
@@ -85,7 +91,13 @@ const TestimonialsSection = () => {
                 className="grid md:grid-cols-[1fr_1.2fr] items-stretch"
               >
                 <div className="relative h-[280px] md:h-[420px] overflow-hidden bg-muted/30 flex items-center justify-center rounded-l-[20px]">
-                  <img src={current.image} alt={current.category} className="w-full h-full object-contain" loading="eager" decoding="sync" fetchPriority="high" />
+                  <img
+                    src={current.image}
+                    alt={current.category}
+                    className="w-full h-full object-contain"
+                    loading={activeIndex === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
                 </div>
                 <div className="flex flex-col justify-center px-6 md:px-10 py-8 md:py-10">
                   <span className="inline-block bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-[11px] font-semibold mb-5 w-fit">{current.category}</span>
@@ -97,13 +109,39 @@ const TestimonialsSection = () => {
         </motion.div>
 
         <div className="flex items-center justify-center gap-4 mb-16">
-          <motion.button onClick={() => scroll("left")} className="w-11 h-11 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+          <motion.button
+            onClick={() => scroll("left")}
+            aria-label="Previous testimonial"
+            className="w-11 h-11 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <ChevronLeft className="w-5 h-5 text-primary-foreground" />
           </motion.button>
+
+          <button
+            onClick={() => setIsPlaying((p) => !p)}
+            aria-label={isPlaying ? "Pause carousel" : "Play carousel"}
+            className="w-9 h-9 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+          >
+            {isPlaying ? (
+              <Pause className="w-4 h-4 text-primary-foreground" />
+            ) : (
+              <Play className="w-4 h-4 text-primary-foreground" />
+            )}
+          </button>
+
           <div className="w-48 md:w-80 h-[5px] bg-primary-foreground/10 rounded-full overflow-hidden">
             <motion.div className="h-full bg-primary-foreground rounded-full" animate={{ width: `${progress}%` }} transition={{ duration: 0.4 }} />
           </div>
-          <motion.button onClick={() => scroll("right")} className="w-11 h-11 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+
+          <motion.button
+            onClick={() => scroll("right")}
+            aria-label="Next testimonial"
+            className="w-11 h-11 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <ChevronRight className="w-5 h-5 text-primary-foreground" />
           </motion.button>
         </div>
@@ -116,7 +154,7 @@ const TestimonialsSection = () => {
                 key={card.title}
                 initial={{ opacity: 0, rotateY: 30 }}
                 whileInView={{ opacity: 1, rotateY: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 className="bg-primary-foreground/5 rounded-[18px] p-6 border border-primary-foreground/10 text-center"
               >

@@ -23,7 +23,7 @@ const ServicesSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-muted-foreground mt-4 max-w-2xl mx-auto text-[15px]"
           >
@@ -35,7 +35,7 @@ const ServicesSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-wrap justify-center gap-6 md:gap-12 mb-16"
         >
@@ -48,7 +48,7 @@ const ServicesSection = () => {
               key={stat.label}
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 + i * 0.1, type: "spring", stiffness: 200 }}
               className="text-center"
             >
@@ -68,7 +68,7 @@ const ServicesSection = () => {
                 key={feature.title}
                 initial={{ opacity: 0, y: 60, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: false, amount: 0.15 }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
                 className={`group rounded-[20px] p-6 border border-border/60 bg-background ${feature.hoverBg} hover:shadow-xl transition-all duration-500 cursor-pointer relative ${colSpan}`}
@@ -82,7 +82,7 @@ const ServicesSection = () => {
                   <motion.div
                     initial={{ opacity: 0, rotate: -90, scale: 0 }}
                     whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.2 + i * 0.08, type: "spring", stiffness: 200 }}
                     className="w-11 h-11 rounded-2xl bg-muted flex items-center justify-center shrink-0"
                   >

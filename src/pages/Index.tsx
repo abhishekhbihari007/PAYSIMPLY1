@@ -6,7 +6,7 @@ import TrustSection from "@/components/TrustSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import FeaturesSection from "@/components/FeaturesSection";
 
-import BlogSection from "@/components/BlogSection";
+import PricingSection from "@/components/BlogSection";
 import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
@@ -14,7 +14,7 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <main className="pt-24">
+      <main id="main-content" className="pt-24">
         <HeroSection />
         <LogoMarquee />
         <ServicesSection />
@@ -22,7 +22,7 @@ const Index = () => {
         <TrustSection />
         <ComparisonSection />
         <FeaturesSection />
-        <BlogSection />
+        <PricingSection />
         
         <FAQSection />
         <CTASection />

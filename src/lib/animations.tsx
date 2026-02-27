@@ -9,7 +9,7 @@ const letter3DChild: Variants = {
 };
 
 export const LetterReveal3D = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={letter3DContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text} style={{ perspective: 400 }}>
+  <motion.span variants={letter3DContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text} style={{ perspective: 400 }}>
     {text.split("").map((char, i) => (
       <motion.span key={i} variants={letter3DChild} className="inline-block" style={{ whiteSpace: char === " " ? "pre" : undefined }}>
         {char === " " ? "\u00A0" : char}
@@ -26,7 +26,7 @@ const wordSlideChild: Variants = {
 };
 
 export const WordSlideUp = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={wordSlideContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={`${className} overflow-hidden`} aria-label={text}>
+  <motion.span variants={wordSlideContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={`${className} overflow-hidden`} aria-label={text}>
     {text.split(" ").map((word, i) => (
       <motion.span key={i} variants={wordSlideChild} className="inline-block mr-[0.3em]">
         {word}
@@ -43,7 +43,7 @@ const blurChild: Variants = {
 };
 
 export const BlurFadeIn = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={blurContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text}>
+  <motion.span variants={blurContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text}>
     {text.split(" ").map((word, i) => (
       <motion.span key={i} variants={blurChild} className="inline-block mr-[0.3em]">
         {word}
@@ -57,7 +57,7 @@ export const ClipReveal = ({ text, className }: { text: string; className?: stri
   <motion.span
     initial={{ clipPath: "inset(0 100% 0 0)" }}
     whileInView={{ clipPath: "inset(0 0% 0 0)" }}
-    viewport={{ once: false, amount: 0.3 }}
+    viewport={{ once: true, amount: 0.3 }}
     transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as const }}
     className={`inline-block ${className}`}
     aria-label={text}
@@ -74,7 +74,7 @@ const scaleChild: Variants = {
 };
 
 export const ScaleBounce = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={scaleContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text}>
+  <motion.span variants={scaleContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text}>
     {text.split(" ").map((word, i) => (
       <motion.span key={i} variants={scaleChild} className="inline-block mr-[0.3em]">
         {word}
@@ -91,7 +91,7 @@ const slideLeftChild: Variants = {
 };
 
 export const SlideFromLeft = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={slideLeftContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text}>
+  <motion.span variants={slideLeftContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text}>
     {text.split(" ").map((word, i) => (
       <motion.span key={i} variants={slideLeftChild} className="inline-block mr-[0.3em]">
         {word}
@@ -108,7 +108,7 @@ const rotateChild: Variants = {
 };
 
 export const RotateReveal = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={rotateContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text} style={{ transformOrigin: "left bottom" }}>
+  <motion.span variants={rotateContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text} style={{ transformOrigin: "left bottom" }}>
     {text.split(" ").map((word, i) => (
       <motion.span key={i} variants={rotateChild} className="inline-block mr-[0.3em]" style={{ transformOrigin: "left bottom" }}>
         {word}
@@ -125,7 +125,7 @@ const staggerChild: Variants = {
 };
 
 export const StaggerFade = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text}>
+  <motion.span variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text}>
     {text.split(" ").map((word, i) => (
       <motion.span key={i} variants={staggerChild} className="inline-block mr-[0.3em]">
         {word}
@@ -142,7 +142,7 @@ const glowChild: Variants = {
 };
 
 export const GlowFade = ({ text, className }: { text: string; className?: string }) => (
-  <motion.span variants={glowContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className={className} aria-label={text}>
+  <motion.span variants={glowContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className={className} aria-label={text}>
     {text.split("").map((char, i) => (
       <motion.span key={i} variants={glowChild} className="inline-block" style={{ whiteSpace: char === " " ? "pre" : undefined }}>
         {char === " " ? "\u00A0" : char}

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import { ScaleBounce } from "@/lib/animations";
 
 const plans = [
@@ -17,7 +18,7 @@ const plans = [
   },
 ];
 
-const BlogSection = () => {
+const PricingSection = () => {
   return (
     <section id="pricing" className="py-24 bg-muted/50">
       <div className="mx-auto px-6 lg:px-16 max-w-[1400px]">
@@ -28,7 +29,7 @@ const BlogSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted-foreground mt-4 max-w-md mx-auto text-[15px]"
           >
@@ -42,7 +43,7 @@ const BlogSection = () => {
               key={plan.name}
               initial={{ opacity: 0, y: 60, rotateX: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as const }}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className={`rounded-[24px] p-8 relative ${plan.highlighted ? "bg-primary text-primary-foreground shadow-xl" : "bg-background border border-border/60"}`}
@@ -54,7 +55,7 @@ const BlogSection = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 + i * 0.1, type: "spring", stiffness: 200 }}
                 className="flex items-baseline gap-1 mb-1"
               >
@@ -67,7 +68,7 @@ const BlogSection = () => {
                     key={f}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: 0.1 + fi * 0.05 }}
                     className="flex items-center gap-2.5 text-sm"
                   >
@@ -76,9 +77,9 @@ const BlogSection = () => {
                   </motion.li>
                 ))}
               </ul>
-              <button className={`w-full py-3.5 rounded-full text-sm font-semibold transition-all ${plan.highlighted ? "bg-secondary text-secondary-foreground hover:brightness-95" : "bg-primary text-primary-foreground hover:brightness-110"}`}>
+              <Link to="/signup" className={`block w-full py-3.5 rounded-full text-sm font-semibold transition-all text-center ${plan.highlighted ? "bg-secondary text-secondary-foreground hover:brightness-95" : "bg-primary text-primary-foreground hover:brightness-110"}`}>
                 {plan.cta}
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -87,4 +88,4 @@ const BlogSection = () => {
   );
 };
 
-export default BlogSection;
+export default PricingSection;

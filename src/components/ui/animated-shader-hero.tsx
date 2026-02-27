@@ -1,7 +1,7 @@
 // FILE: src/components/ui/animated-shader-hero.tsx
 // The background effect is driven by buildShaderSource(...) + useShaderBackground(...)
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 export interface AnimatedShaderHeroProps {
   className?: string;
@@ -195,20 +195,34 @@ const AnimatedShaderHero: React.FC<AnimatedShaderHeroProps> = ({
   shaderColors,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [webglSupported, setWebglSupported] = useState(true);
   const shaderSource = React.useMemo(
     () => buildShaderSource(shaderColors ?? defaultShaderColors),
     [shaderColors]
   );
   useShaderBackground(canvasRef, shaderSource);
 
+  useEffect(() => {
+    const canvas = document.createElement("canvas");
+    if (!canvas.getContext("webgl2")) setWebglSupported(false);
+  }, []);
+
   return (
     <div className={`relative w-full overflow-hidden rounded-[24px] md:rounded-[32px] min-h-[calc(100vh-6.25rem-1rem)] ${className}`}>
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover touch-none select-none"
-        style={{ background: "#000" }}
-        aria-hidden
-      />
+      {webglSupported ? (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full object-cover touch-none select-none"
+          style={{ background: "#064030" }}
+          aria-hidden
+        />
+      ) : (
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{ background: "linear-gradient(135deg, #064030 0%, #0D4D3E 50%, #042E22 100%)" }}
+          aria-hidden
+        />
+      )}
       {children}
     </div>
   );

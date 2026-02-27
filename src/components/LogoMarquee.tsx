@@ -11,13 +11,14 @@ const LogoMarquee = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="py-4 bg-primary overflow-hidden"
+      aria-hidden="true"
     >
       <div className="relative">
-        <div className="flex marquee items-center">
+        <div className="flex marquee items-center motion-safe:animate-[marquee_30s_linear_infinite]">
           <span className="text-secondary font-body font-semibold text-sm tracking-[0.2em] uppercase whitespace-nowrap">
             {repeated}
           </span>
-          <span className="text-secondary font-body font-semibold text-sm tracking-[0.2em] uppercase whitespace-nowrap">
+          <span className="text-secondary font-body font-semibold text-sm tracking-[0.2em] uppercase whitespace-nowrap" aria-hidden="true">
             {repeated}
           </span>
         </div>

@@ -25,7 +25,7 @@ const FAQSection = () => {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
           >
             <h2 className="text-3xl md:text-4xl font-heading font-normal tracking-[-0.02em] text-foreground leading-tight mb-4 overflow-hidden">
@@ -36,7 +36,7 @@ const FAQSection = () => {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-muted-foreground text-base leading-relaxed mb-8 max-w-md"
             >
@@ -45,7 +45,7 @@ const FAQSection = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="rounded-2xl overflow-hidden hidden lg:block"
             >
@@ -54,34 +54,53 @@ const FAQSection = () => {
           </motion.div>
 
           <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
-                transition={{ duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] as const }}
-                className={`rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === i ? "bg-primary" : "bg-muted"}`}
-              >
-                <button className="w-full flex items-center justify-between p-5 md:p-6 text-left" onClick={() => setOpenIndex(openIndex === i ? null : i)}>
-                  <span className={`font-body text-sm md:text-base pr-4 ${openIndex === i ? "text-primary-foreground font-medium" : "text-foreground"}`}>
-                    {i + 1}. {faq.question}
-                  </span>
-                  <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${openIndex === i ? "bg-primary-foreground text-primary" : "bg-foreground text-background"}`}>
-                    {openIndex === i ? <Minus className="w-4 h-4 md:w-5 md:h-5" /> : <Plus className="w-4 h-4 md:w-5 md:h-5" />}
-                  </div>
-                </button>
-                <AnimatePresence>
-                  {openIndex === i && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}>
-                      <div className="px-5 md:px-6 pb-5 md:pb-6 border-t border-primary-foreground/10">
-                        <p className="text-sm leading-relaxed text-primary-foreground/75 pt-4">{faq.answer}</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
+            {faqs.map((faq, i) => {
+              const isOpen = openIndex === i;
+              const panelId = `faq-panel-${i}`;
+              const buttonId = `faq-button-${i}`;
+              return (
+                <motion.div
+                  key={faq.question}
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] as const }}
+                  className={`rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? "bg-primary" : "bg-muted"}`}
+                >
+                  <button
+                    id={buttonId}
+                    className="w-full flex items-center justify-between p-5 md:p-6 text-left"
+                    onClick={() => setOpenIndex(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                  >
+                    <span className={`font-body text-sm md:text-base pr-4 ${isOpen ? "text-primary-foreground font-medium" : "text-foreground"}`}>
+                      {i + 1}. {faq.question}
+                    </span>
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${isOpen ? "bg-primary-foreground text-primary" : "bg-foreground text-background"}`}>
+                      {isOpen ? <Minus className="w-4 h-4 md:w-5 md:h-5" /> : <Plus className="w-4 h-4 md:w-5 md:h-5" />}
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={buttonId}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="px-5 md:px-6 pb-5 md:pb-6 border-t border-primary-foreground/10">
+                          <p className="text-sm leading-relaxed text-primary-foreground/75 pt-4">{faq.answer}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

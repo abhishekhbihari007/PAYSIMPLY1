@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import { GlowFade } from "@/lib/animations";
 
 const CTASection = () => {
@@ -9,7 +10,7 @@ const CTASection = () => {
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.97 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] as const }}
           className="cta-gradient rounded-[28px] px-8 py-16 md:px-16 md:py-20 text-center relative overflow-hidden"
         >
@@ -28,7 +29,7 @@ const CTASection = () => {
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-primary-foreground/55 text-sm max-w-md mx-auto mb-8 relative z-10"
           >
@@ -38,19 +39,19 @@ const CTASection = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4, type: "spring", stiffness: 200 }}
             className="mb-8 relative z-10"
           >
-            <button className="bg-secondary text-secondary-foreground px-8 py-4 rounded-full text-sm font-semibold hover:brightness-95 transition-all">
+            <Link to="/signup" className="bg-secondary text-secondary-foreground px-8 py-4 rounded-full text-sm font-semibold hover:brightness-95 transition-all inline-block">
               Create UPI payment link
-            </button>
+            </Link>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-primary-foreground/70 text-sm relative z-10"
           >
@@ -59,7 +60,7 @@ const CTASection = () => {
                 key={item}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.7 + i * 0.1 }}
                 className="flex items-center gap-2"
               >

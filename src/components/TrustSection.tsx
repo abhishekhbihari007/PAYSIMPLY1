@@ -20,7 +20,7 @@ const TrustSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-muted-foreground mt-4 max-w-md mx-auto text-[15px]"
           >
@@ -36,14 +36,14 @@ const TrustSection = () => {
                 key={card.title}
                 initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1, type: "spring", stiffness: 150 }}
                 className="bg-background rounded-[20px] p-5 md:p-6 border border-border/60 text-center hover:shadow-lg transition-shadow duration-300"
               >
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.2 + i * 0.1, type: "spring" }}
                   className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-3 md:mb-4"
                 >
@@ -59,7 +59,7 @@ const TrustSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: false }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="bg-primary rounded-2xl px-6 md:px-8 py-5 md:py-6 text-center"
         >
