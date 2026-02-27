@@ -83,9 +83,29 @@ const Navbar = () => {
           {/* Right side CTA – pill button and arrow icon button */}
           <div className="nav__cta-wrap">
             {isAuthPage ? (
-              <Link to="/" className="nav__cta">
-                Go back to home
-              </Link>
+              <>
+                <Link
+                  to="/"
+                  className="nav__cta-icon"
+                  aria-label="Go Home"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M17 7L7 17M7 17H17M7 17V7" />
+                  </svg>
+                </Link>
+                <Link to="/" className="nav__cta">
+                  Go Home
+                </Link>
+              </>
             ) : (
               <>
                 <Link to="/signup" className="nav__cta">

@@ -708,68 +708,45 @@ export const AuthComponent = ({
                 </div>
               </BlurFade>
 
-              {/* Dual Google buttons: Login vs Sign up */}
               <BlurFade
                 delay={0.25 * 2}
-                className="w-full flex flex-row gap-3 sm:gap-4"
+                className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
               >
-                <div className="flex-1 min-w-0 space-y-2 sm:space-y-3">
-                  <p className="text-xs sm:text-sm font-medium text-muted-foreground text-center">
-                    Already have an account?
-                  </p>
-                  <div className="glass-input-wrap w-full">
-                    <button
-                      type="button"
-                      disabled={loading}
-                      onClick={() => onGoogleLogin?.()}
-                      className="glass-input w-full flex items-center justify-center gap-2 sm:gap-3 border-0 cursor-pointer font-inherit text-inherit rounded-full disabled:opacity-70 disabled:cursor-not-allowed min-h-[52px] sm:min-h-[56px] py-3 px-4 sm:py-4 sm:px-5 text-sm sm:text-base"
-                    >
-                      <span
-                        className="glass-input-text-area"
-                        aria-hidden="true"
-                      />
-                      <div className="relative z-10 flex-shrink-0 flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7">
-                        {loading ? (
-                          <Loader className="h-5 w-5 sm:h-6 sm:w-6 text-foreground animate-spin" />
-                        ) : (
-                          <GoogleIcon />
-                        )}
-                      </div>
-                      <span className="relative z-10 font-semibold text-foreground whitespace-nowrap">
-                        {loading ? "Signing in..." : "Login with Google"}
-                      </span>
-                    </button>
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={() => onGoogleLogin?.()}
+                  className="glass-btn flex items-center justify-center gap-3 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-h-[56px] sm:min-h-[60px] py-3.5 px-8 sm:py-4 sm:px-10"
+                >
+                  <div className="flex-shrink-0 flex items-center justify-center w-7 h-7">
+                    {loading ? (
+                      <Loader className="h-6 w-6 text-foreground animate-spin" />
+                    ) : (
+                      <GoogleIcon />
+                    )}
                   </div>
-                </div>
+                  <span className="font-semibold text-foreground text-sm sm:text-base whitespace-nowrap">
+                    {loading ? "Signing in..." : "Login with Google"}
+                  </span>
+                </button>
 
-                <div className="flex-1 min-w-0 space-y-2 sm:space-y-3">
-                  <p className="text-xs sm:text-sm font-medium text-muted-foreground text-center">
-                    New here?
-                  </p>
-                  <div className="glass-input-wrap w-full">
-                    <button
-                      type="button"
-                      disabled={loading}
-                      onClick={() => onGoogleSignUp?.()}
-                      className="glass-input w-full flex items-center justify-center gap-2 sm:gap-3 border-0 cursor-pointer font-inherit text-inherit rounded-full disabled:opacity-70 disabled:cursor-not-allowed min-h-[52px] sm:min-h-[56px] py-3 px-4 sm:py-4 sm:px-5 text-sm sm:text-base"
-                    >
-                      <span
-                        className="glass-input-text-area"
-                        aria-hidden="true"
-                      />
-                      <div className="relative z-10 flex-shrink-0 flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7">
-                        {loading ? (
-                          <Loader className="h-5 w-5 sm:h-6 sm:w-6 text-foreground animate-spin" />
-                        ) : (
-                          <GoogleIcon />
-                        )}
-                      </div>
-                      <span className="relative z-10 font-semibold text-foreground whitespace-nowrap">
-                        {loading ? "Signing up..." : "Sign up with Google"}
-                      </span>
-                    </button>
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={() => onGoogleSignUp?.()}
+                  className="glass-btn flex items-center justify-center gap-3 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-h-[56px] sm:min-h-[60px] py-3.5 px-8 sm:py-4 sm:px-10"
+                >
+                  <div className="flex-shrink-0 flex items-center justify-center w-7 h-7">
+                    {loading ? (
+                      <Loader className="h-6 w-6 text-foreground animate-spin" />
+                    ) : (
+                      <GoogleIcon />
+                    )}
                   </div>
-                </div>
+                  <span className="font-semibold text-foreground text-sm sm:text-base whitespace-nowrap">
+                    {loading ? "Signing up..." : "Sign up with Google"}
+                  </span>
+                </button>
               </BlurFade>
 
               {error && (

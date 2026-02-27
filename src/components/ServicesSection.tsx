@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Link, QrCode, MousePointerClick, Globe, FileText, Image } from "lucide-react";
+import { ArrowUpRight, Link as LinkIcon, QrCode, MousePointerClick, Globe, FileText, Image } from "lucide-react";
+import { Link } from "react-router-dom";
 import { WordSlideUp } from "@/lib/animations";
 
 const features = [
-  { icon: Link, tag: "Most Popular", title: "UPI Payment Link", description: "Create unlimited UPI links. Fixed or custom amounts. Share anywhere." },
-  { icon: QrCode, tag: null, title: "QR Code Generator", description: "Instant QR codes. Download, print, share. Works with all UPI apps." },
-  { icon: MousePointerClick, tag: null, title: "Payment Buttons", description: "One-tap buttons for instant payments. Tips, donations, orders." },
-  { icon: Globe, tag: "Recommended", title: "Payment Page", description: "Your own page — paysimply.in/yourname. Professional & clean." },
-  { icon: FileText, tag: null, title: "GST Invoices", description: "GST-compliant invoices with embedded UPI QR. GSTIN, HSN codes included." },
-  { icon: Image, tag: "New", title: "Image to PDF", description: "Convert receipts to PDF with QR watermark. Nothing stored on servers." },
+  { icon: LinkIcon, tag: "Most Popular", title: "UPI Payment Link", description: "Create unlimited UPI links. Fixed or custom amounts. Share anywhere.", hoverBg: "hover:bg-emerald-50" },
+  { icon: QrCode, tag: null, title: "QR Code Generator", description: "Instant QR codes. Download, print, share. Works with all UPI apps.", hoverBg: "hover:bg-amber-50" },
+  { icon: MousePointerClick, tag: null, title: "Payment Buttons", description: "One-tap buttons for instant payments. Tips, donations, orders.", hoverBg: "hover:bg-sky-50" },
+  { icon: Globe, tag: "Recommended", title: "Payment Page", description: "Your own page — paysimply.in/yourname. Professional & clean.", hoverBg: "hover:bg-violet-50" },
+  { icon: FileText, tag: null, title: "GST Invoices", description: "GST-compliant invoices with embedded UPI QR. GSTIN, HSN codes included.", hoverBg: "hover:bg-rose-50" },
+  { icon: Image, tag: "New", title: "Image to PDF", description: "Convert receipts to PDF with QR watermark. Nothing stored on servers.", hoverBg: "hover:bg-orange-50" },
 ];
 
 const ServicesSection = () => {
@@ -17,16 +18,14 @@ const ServicesSection = () => {
       <div className="mx-auto px-6 lg:px-16 max-w-[1400px]">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-heading font-normal tracking-[-0.02em] text-foreground leading-tight overflow-hidden">
-            <WordSlideUp text="Everything You Need to" />
-            <br />
-            <WordSlideUp text="Accept UPI Payments" />
+            <WordSlideUp text="Everything You Need to Accept UPI Payments" />
           </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-muted-foreground mt-4 max-w-[540px] mx-auto text-[15px]"
+            className="text-muted-foreground mt-4 max-w-2xl mx-auto text-[15px]"
           >
             We generate everything else. No apps. No complicated setup. No payment gateway required.
           </motion.p>
@@ -72,29 +71,31 @@ const ServicesSection = () => {
                 viewport={{ once: false, amount: 0.15 }}
                 transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const }}
                 whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className={`group rounded-[20px] p-8 border border-border/60 bg-background hover:shadow-xl transition-shadow duration-500 cursor-pointer relative flex flex-col justify-between min-h-[220px] ${colSpan}`}
+                className={`group rounded-[20px] p-6 border border-border/60 bg-background ${feature.hoverBg} hover:shadow-xl transition-all duration-500 cursor-pointer relative ${colSpan}`}
               >
-                <div>
-                  {feature.tag && (
-                    <span className="absolute top-6 right-6 bg-secondary/20 text-primary px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border border-secondary/40">
-                      {feature.tag}
-                    </span>
-                  )}
+                {feature.tag && (
+                  <span className="absolute top-5 right-5 bg-secondary/20 text-primary px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide border border-secondary/40">
+                    {feature.tag}
+                  </span>
+                )}
+                <div className="flex items-start gap-4">
                   <motion.div
                     initial={{ opacity: 0, rotate: -90, scale: 0 }}
                     whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
                     viewport={{ once: false }}
                     transition={{ duration: 0.5, delay: 0.2 + i * 0.08, type: "spring", stiffness: 200 }}
-                    className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center mb-6"
+                    className="w-11 h-11 rounded-2xl bg-muted flex items-center justify-center shrink-0"
                   >
-                    <Icon className="w-6 h-6 text-foreground" />
+                    <Icon className="w-5 h-5 text-foreground" />
                   </motion.div>
-                  <h3 className="font-heading font-normal tracking-[-0.02em] text-xl text-foreground mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading font-normal tracking-[-0.02em] text-lg text-foreground mb-1">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                    <Link to="/signup" className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground group-hover:gap-2.5 transition-all mt-3">
+                      Get started <ArrowUpRight className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </div>
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground group-hover:gap-2.5 transition-all mt-6">
-                  Get started <ArrowUpRight className="w-4 h-4" />
-                </span>
               </motion.div>
             );
           })}

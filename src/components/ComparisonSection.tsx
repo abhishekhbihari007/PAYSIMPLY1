@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const rows = [
   { feature: "Setup Time", paysimply: "30 seconds", others: "2-7 days" },
@@ -70,9 +71,9 @@ const ComparisonSection = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center mt-10"
         >
-          <a href="#" className="bg-secondary text-secondary-foreground px-8 py-3.5 rounded-full text-sm font-semibold hover:brightness-95 transition-all inline-block">
+          <Link to="/signup" className="bg-secondary text-secondary-foreground px-8 py-3.5 rounded-full text-sm font-semibold hover:brightness-95 transition-all inline-block">
             Start for free — 0% commission
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
